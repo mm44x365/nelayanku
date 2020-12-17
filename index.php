@@ -29,28 +29,29 @@ if (isset($_SESSION['user'])) {
 
         //Jika from username, dan password kosong maka proses login gagal
         if (!$username || !$password) {
-            $_SESSION['notification'] = array('alert' => 'danger', 'title' => 'Gagal', 'message' => 'Mohon isi semua form.');
+            $_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon isi semua form.');
         }
         //Jika username admin ditemukan
         else if ($check_user_rows == 1) {
             if ($is_active < 1) {
-                $_SESSION['notification'] = array('alert' => 'danger', 'title' => 'Gagal', 'message' => 'User anda tidak aktif, silakan hubungi admin.');
+                $_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'User anda tidak aktif, silakan hubungi admin.');
             }
             //Jika hasil dari $verif_pass true/benar maka dibuat session admin, dan arahkan ke dashboard
             elseif ($verif_pass == true) {
                 $ip_address = $_SERVER['REMOTE_ADDR'];
-                if ($connect->query("UPDATE user SET last_login_ip = '$ip_address' WHERE username = '$username'") == true) {
+                if ($connect->query("UPDATE user SET last_ip = '$ip_address' WHERE username = '$username'") == true) {
                     $_SESSION['user'] = $data_user;
                     //check_session();
+                    $_SESSION['notification'] = array('alert' => 'success', 'title' => 'Berhasil', 'message' => 'Anda berhasil masuk, selamat datang :D ');
                     exit(header("Location: " . base_url() . "dashboard/"));
                 }
             } else {
                 //Jika hasil dari $verif_pass false/salah maka proses login gagal
-                $_SESSION['notification'] = array('alert' => 'danger', 'title' => 'Gagal', 'message' => 'Password salah.');
+                $_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Password salah.');
             }
         } else {
             //Jika username admin tidak ditemukan
-            $_SESSION['notification'] = array('alert' => 'danger', 'title' => 'Gagal', 'message' => 'Akun tidak ditemukan.');
+            $_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Akun tidak ditemukan.');
         }
     }
 }

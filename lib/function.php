@@ -13,45 +13,11 @@ function base_url()
 	return $base_url;
 }
 
-// function notification()
-// {
-// 	$_SESSION['notification'] = array('alert' => 'null', 'title' => 'null', 'message' => 'null');
-// 	return $_SESSION['notification'];
-// }
 
 function filter($data)
 {
 	$filter = stripslashes(strip_tags(htmlspecialchars(htmlentities($data, ENT_QUOTES))));
 	return $filter;
-}
-
-function set_flashdata($key, $value)
-{
-	$_SESSION[$key] = $value;
-}
-
-function set_flashdata_array($key, $array)
-{
-	$_SESSION[$key] = $array;
-}
-
-function check_flashdata($key)
-{
-	if (isset($_SESSION[$key])) {
-		$data = $_SESSION[$key];
-		return $data;
-	}
-}
-
-function get_flashdata($key)
-{
-	if (isset($_SESSION[$key])) {
-		$data = $_SESSION[$key];
-		if ($_SESSION[$key] != '') {
-			$_SESSION[$key] = '';
-		}
-		return $data;
-	}
 }
 
 function visualArr($array)
@@ -76,6 +42,50 @@ function getExtension($file)
 	$exploded = explode('.', $file['name']);
 	$extension = end($exploded);
 	return $extension;
+}
+
+function checkUser()
+{
+	global $config, $connect;
+	if (isset($_SESSION['user'])) {
+		$session_username = $_SESSION['user']['username'];
+		$session_role = $_SESSION['user']['role'];
+		$ip_address = $_SERVER['REMOTE_ADDR'];
+
+		$checkUser = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND is_active = '1' AND last_ip = '$ip_address'");
+		$checkUserRows = mysqli_num_rows($checkUser);
+
+		if ($checkUserRows != 1) {
+			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Sepertinya ada sesuatu yang berubah, silakan login ulang.');
+			unset($_SESSION['user']);
+			exit(header("Location: " . base_url()));
+		}
+	} else {
+		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
+		exit(header("Location: " . base_url()));
+	}
+}
+
+function checkAdmin()
+{
+	global $config, $connect;
+	if (isset($_SESSION['user'])) {
+		$session_username = $_SESSION['user']['username'];
+		$session_role = $_SESSION['user']['role'];
+		$ip_address = $_SERVER['REMOTE_ADDR'];
+
+		$checkUser = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND role = '1' AND is_active = '1' AND last_ip = '$ip_address'");
+		$checkUserRows = mysqli_num_rows($checkUser);
+
+		if ($checkUserRows != 1) {
+			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Sepertinya ada sesuatu yang berubah, silakan login ulang.');
+			unset($_SESSION['user']);
+			exit(header("Location: " . base_url()));
+		}
+	} else {
+		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
+		exit(header("Location: " . base_url()));
+	}
 }
 
 function check_session($role)
@@ -161,7 +171,8 @@ function tanggal_indo($tanggal, $cetak_hari = false)
 	return $tgl_indo;
 }
 
-function dashboardAdmin($data, $seesUser){
+function dashboardAdmin($data, $seesUser)
+{
 	global $config, $connect;
 
 	switch ($data) {
@@ -176,14 +187,14 @@ function dashboardAdmin($data, $seesUser){
 			break;
 
 		case 'totalSubtitleUser':
-		$checkData = $connect->query("SELECT * FROM subtitle WHERE author = '$seesUser'");
-		$return = mysqli_num_rows($checkData);
-		break;
-		
+			$checkData = $connect->query("SELECT * FROM subtitle WHERE author = '$seesUser'");
+			$return = mysqli_num_rows($checkData);
+			break;
+
 		default:
 			# code...
 			break;
 	}
 
-	 return $return;
+	return $return;
 }

@@ -16,7 +16,7 @@ if (isset($_SESSION['notification']['alert'])) {
         swal({
             title: '<?= $_SESSION['notification']['title'] ?>!',
             text: '<?= $_SESSION['notification']['message'] ?>',
-            type: 'error',
+            type: '<?= $_SESSION['notification']['alert'] ?>',
             timer: 3000,
             showConfirmButton: true
         });
