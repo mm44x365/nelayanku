@@ -2,22 +2,22 @@
 function get_webSettings()
 {
 	global $connect;
-	$CallData = mysqli_query($connect, "SELECT * FROM web_info WHERE id = '1'");
+	$CallData = mysqli_query($connect, "SELECT * FROM web_config WHERE id = '1'");
 	$ThisData = mysqli_fetch_assoc($CallData);
 	return $ThisData;
 }
 
 function base_url()
 {
-	$base_url = "http://127.0.0.1/subskuy/";
+	$base_url = "http://127.0.0.1/nelayanku/";
 	return $base_url;
 }
 
-function notification()
-{
-	$_SESSION['notification'] = array('alert' => 'null', 'title' => 'null', 'message' => 'null');
-	return $_SESSION['notification'];
-}
+// function notification()
+// {
+// 	$_SESSION['notification'] = array('alert' => 'null', 'title' => 'null', 'message' => 'null');
+// 	return $_SESSION['notification'];
+// }
 
 function filter($data)
 {
@@ -87,9 +87,9 @@ function check_session($role)
 		$session_role = $_SESSION['user']['role'];
 		$ip_address = $_SERVER['REMOTE_ADDR'];
 
-		$checkAdmin = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND role = '1'  AND last_login_ip = '$ip_address'");
+		$checkAdmin = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND role = '1'  AND last_ip = '$ip_address'");
 		$checkAdminRows = mysqli_num_rows($checkAdmin);
-		$checkMember = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND last_login_ip = '$ip_address'");
+		$checkMember = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND last_ip = '$ip_address'");
 		$checkMemberRows = mysqli_num_rows($checkMember);
 		if ($role == 'admin') {
 			if ($checkAdminRows == 0) {
