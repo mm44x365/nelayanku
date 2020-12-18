@@ -1,14 +1,15 @@
 <?php
-if (isset($_SESSION['user'])) {
-	$checkRole = $_SESSION['user']['role'];
-	if ($checkRole == 1) {
-		checkAdmin();
-	} elseif ($checkRole == 2) {
-		checkUser();
-	}
-} else {
-	checkUser();
-}
+// if (isset($_SESSION['user'])) {
+// 	$checkRole = $_SESSION['user']['role'];
+// 	if ($checkRole == 1) {
+// 		checkAdmin();
+// 	} elseif ($checkRole == 2) {
+// 		checkUser();
+// 	}
+// } else {
+// 	checkUser();
+// }
+check_session('member');
 ?>
 
 <!DOCTYPE html>
@@ -91,12 +92,12 @@ if (isset($_SESSION['user'])) {
 								</a>
 							</li>
 							<li class="nav-item">
-								<a href="<?= base_url() ?>user-management/" class="nav-link 
-								<?php if ($page == "Users Management") {
+								<a href="<?= base_url() ?>kelola/karyawan/" class="nav-link 
+								<?php if ($page == "Kelola Karyawan") {
 									echo "active";
 								} ?>">
 									<i class="nav-icon fas fa-users-cog"></i>
-									<p>Users Management</p>
+									<p>Kelola Karyawan</p>
 								</a>
 							</li>
 							<li class="nav-item">
@@ -123,7 +124,7 @@ if (isset($_SESSION['user'])) {
 							</li>
 							<li class="nav-header">Subtitle</li>
 							<li class="nav-item">
-								<a href="<?= base_url() ?>subtitle/new/" class="nav-link 
+								<a href="<?= base_url() ?>kelola/karyawan/" class="nav-link 
 							<?php if ($page == "Tambah Subtitle") {
 								echo "active";
 							} ?>">

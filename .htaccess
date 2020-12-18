@@ -30,7 +30,7 @@ RewriteRule    ^check/?$    auth/check_session.php    [NC,L]
 
 #MODUL_DASHBOARD
 RewriteRule    ^account/settings/?$    dashboard/account_settings.php    [NC,L] 
-RewriteRule    ^user-management/?$    dashboard/a_users-management.php    [NC,L] 
+RewriteRule    ^kelola/karyawan/?$    dashboard/a_kelola-karyawan.php    [NC,L] 
 
 #MODUL_SUBTITLE
 RewriteRule    ^subtitle/new/?$    dashboard/add_subtitle.php    [NC,L] 

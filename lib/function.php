@@ -44,49 +44,49 @@ function getExtension($file)
 	return $extension;
 }
 
-function checkUser()
-{
-	global $config, $connect;
-	if (isset($_SESSION['user'])) {
-		$session_username = $_SESSION['user']['username'];
-		$session_role = $_SESSION['user']['role'];
-		$ip_address = $_SERVER['REMOTE_ADDR'];
+// function checkUser()
+// {
+// 	global $config, $connect;
+// 	if (isset($_SESSION['user'])) {
+// 		$session_username = $_SESSION['user']['username'];
+// 		$session_role = $_SESSION['user']['role'];
+// 		$ip_address = $_SERVER['REMOTE_ADDR'];
 
-		$checkUser = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND is_active = '1' AND last_ip = '$ip_address'");
-		$checkUserRows = mysqli_num_rows($checkUser);
+// 		$checkUser = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND is_active = '1' AND last_ip = '$ip_address'");
+// 		$checkUserRows = mysqli_num_rows($checkUser);
 
-		if ($checkUserRows != 1) {
-			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Sepertinya ada sesuatu yang berubah, silakan login ulang.');
-			unset($_SESSION['user']);
-			exit(header("Location: " . base_url()));
-		}
-	} else {
-		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
-		exit(header("Location: " . base_url()));
-	}
-}
+// 		if ($checkUserRows != 1) {
+// 			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Sepertinya ada sesuatu yang berubah, silakan login ulang.');
+// 			unset($_SESSION['user']);
+// 			exit(header("Location: " . base_url()));
+// 		}
+// 	} else {
+// 		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
+// 		exit(header("Location: " . base_url()));
+// 	}
+// }
 
-function checkAdmin()
-{
-	global $config, $connect;
-	if (isset($_SESSION['user'])) {
-		$session_username = $_SESSION['user']['username'];
-		$session_role = $_SESSION['user']['role'];
-		$ip_address = $_SERVER['REMOTE_ADDR'];
+// function checkAdmin()
+// {
+// 	global $config, $connect;
+// 	if (isset($_SESSION['user'])) {
+// 		$session_username = $_SESSION['user']['username'];
+// 		$session_role = $_SESSION['user']['role'];
+// 		$ip_address = $_SERVER['REMOTE_ADDR'];
 
-		$checkUser = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND role = '1' AND is_active = '1' AND last_ip = '$ip_address'");
-		$checkUserRows = mysqli_num_rows($checkUser);
+// 		$checkUser = $connect->query("SELECT * FROM user WHERE username = '$session_username' AND role = '1' AND is_active = '1' AND last_ip = '$ip_address'");
+// 		$checkUserRows = mysqli_num_rows($checkUser);
 
-		if ($checkUserRows != 1) {
-			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Sepertinya ada sesuatu yang berubah, silakan login ulang.');
-			unset($_SESSION['user']);
-			exit(header("Location: " . base_url()));
-		}
-	} else {
-		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
-		exit(header("Location: " . base_url()));
-	}
-}
+// 		if ($checkUserRows != 1) {
+// 			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Sepertinya ada sesuatu yang berubah, silakan login ulang.');
+// 			unset($_SESSION['user']);
+// 			exit(header("Location: " . base_url()));
+// 		}
+// 	} else {
+// 		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
+// 		exit(header("Location: " . base_url()));
+// 	}
+// }
 
 function check_session($role)
 {
@@ -109,14 +109,14 @@ function check_session($role)
 			}
 		} elseif ($role == 'member') {
 			if ($checkMemberRows == 0) {
-				$_SESSION['notification'] = array('alert' => 'danger', 'title' => 'Gagal', 'message' => 'Alamat Ip berubah, silakan login ulang.');
+				$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Alamat Ip berubah, silakan login ulang.');
 				unset($_SESSION['user']);
-				exit(header("Location: " . base_url() . "login/"));
+				exit(header("Location: " . base_url() . ""));
 			}
 		}
 	} else {
-		$_SESSION['notification'] = array('alert' => 'danger', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
-		exit(header("Location: " . base_url() . "login/"));
+		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Mohon login terlebih dahulu.');
+		exit(header("Location: " . base_url()));
 	}
 }
 
