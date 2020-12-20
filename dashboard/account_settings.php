@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-6">
 					<div class="card">
 						<div class="card-header">
 							<h3 class="card-title">Data Akun Kamu</h3>
@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
 								<div class="col-md-12">
 									<form class="form" action="" method="post">
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-12">
 												<div class="form-group">
 													<label>Username</label>
 													<input type="text" name="username" class="form-control" value="<?= $_SESSION['user']['username'] ?>" readonly="true">
