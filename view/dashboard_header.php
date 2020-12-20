@@ -100,13 +100,14 @@ check_session('member');
 									<p>Kelola Karyawan</p>
 								</a>
 							</li>
+							<li class="nav-header">Pengaturan</li>
 							<li class="nav-item">
-								<a href="<?= base_url() ?>manage/subtitle/" class="nav-link 
-							<?php if ($page == "Manage Subtitle") {
-								echo "active";
-							} ?>">
-									<i class="nav-icon fas fa-sliders-h"></i>
-									<p>Subtitle Management</p>
+								<a href="<?= base_url() ?>website/settings/" class="nav-link 
+								<?php if ($page == "Pengaturan Website") {
+									echo "active";
+								} ?>">
+									<i class="nav-icon fas fa-cogs"></i>
+									<p>Pengaturan Website</p>
 								</a>
 							</li>
 						<?php
@@ -135,7 +136,7 @@ check_session('member');
 						<?php
 						}
 						?>
-						<li class="nav-header">Setting</li>
+						<li class="nav-header">Akun</li>
 						<li class="nav-item">
 							<a href="<?= base_url() ?>account/settings/" class="nav-link 
 							<?php if ($page == "Pengaturan Akun") {

@@ -30,13 +30,13 @@ if (isset($_POST['add_data'])) {
 	}
 
 	//Jika jumlah karakter username kurang dari 6 maka proses daftar gagal
-	elseif (strlen($username) < 6) {
-		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Username minimal berjumlah 6 karakter.');
+	elseif (strlen($username) < 4) {
+		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Username minimal berjumlah 4 karakter.');
 	}
 
 	//Jika jumlah karakter password kurang dari 6 maka proses daftar gagal
-	elseif (strlen($password1) < 6) {
-		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Password minimal berjumlah 6 karakter.');
+	elseif (strlen($password1) < 4) {
+		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Password minimal berjumlah 4 karakter.');
 	}
 
 	//Apakah password1 dan password2 cocok? jika tidak maka proses daftar gagal
@@ -65,24 +65,25 @@ if (isset($_POST['edit_data'])) {
 	$idUser = $connect->real_escape_string(filter($_POST['idUser']));
 	$realUsername = $connect->real_escape_string(filter($_POST['realUsername']));
 	$username = $connect->real_escape_string(filter($_POST['username']));
+	$fullName = $connect->real_escape_string(filter($_POST['fullName']));
 	$role = $connect->real_escape_string(filter($_POST['role']));
 	$is_active = $connect->real_escape_string(filter($_POST['is_active']));
 
-	if (!$idUser || !$username || !$role) {
+	if (!$idUser || !$username || !$role || !$fullName) {
 		$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Harap mengisi semua form.');
 	} elseif ($username != $realUsername) {
 		//Cek data apakah sudah ada dalam database?
 		$checkUsername = $connect->query("SELECT * FROM user WHERE username = '$username'");
 		if ($checkUsername->num_rows > 0) {
 			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Email <strong>(' . $username . ')</strong> Sudah terdaftar.');
-		} elseif ($connect->query("UPDATE user SET username = '$username', role = '$role', is_active = '$is_active' WHERE id = '$idUser'") == true) {
+		} elseif ($connect->query("UPDATE user SET username = '$username', full_name = '$fullName', role = '$role', is_active = '$is_active' WHERE id = '$idUser'") == true) {
 			echo $username, $role, $is_active;
 			$_SESSION['notification'] = array('alert' => 'success', 'title' => 'Berhasil', 'message' => 'Data berhasil diubah.');
 		} else {
 			$_SESSION['notification'] = array('alert' => 'error', 'title' => 'Gagal', 'message' => 'Fatal error!' . mysqli_error($connect));
 		}
 	} else {
-		if ($connect->query("UPDATE user SET username = '$username', role = '$role', is_active = '$is_active' WHERE id = '$idUser'") == true) {
+		if ($connect->query("UPDATE user SET username = '$username', full_name = '$fullName', role = '$role', is_active = '$is_active' WHERE id = '$idUser'") == true) {
 			echo $username, $role, $is_active;
 			$_SESSION['notification'] = array('alert' => 'success', 'title' => 'Berhasil', 'message' => 'Data berhasil diubah.');
 		} else {
@@ -209,6 +210,14 @@ if (isset($_POST['edit_password'])) {
 															<div class="modal-body">
 																<form method="POST">
 																	<div class="input-group mb-3">
+																		<input type="text" name="fullName" class="form-control" placeholder="Nama Lengkap" value="<?= $dataUsers['full_name'] ?>">
+																		<div class="input-group-append">
+																			<div class="input-group-text">
+																				<span class="fa fa-id-card"></span>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="input-group mb-3">
 																		<input type="text" name="idUser" value="<?= $dataUsers['id'] ?>" hidden>
 																		<input type="text" name="realUsername" value="<?= $dataUsers['username'] ?>" hidden>
 																		<input type="text" name="username" class="form-control" placeholder="Nama Admin" value="<?= $dataUsers['username'] ?>">
@@ -299,7 +308,7 @@ if (isset($_POST['edit_password'])) {
 																	<input type="text" name="idUser" value="<?= $dataUsers['id'] ?>" hidden>
 															</div>
 															<div class="modal-footer">
-																<button type="submit" name="delete_data" class="btn btn-error"><i class="fas fa-paper-plane btn-xs"></i> Yakin, Hapus</button>
+																<button type="submit" name="delete_data" class="btn btn-danger"><i class="fas fa-paper-plane btn-xs"></i> Yakin, Hapus</button>
 																<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fas fa-times btn-xs"></i> Batal</button>
 																</form>
 															</div>
@@ -357,13 +366,16 @@ if (isset($_POST['edit_password'])) {
 							</div>
 						</div>
 					</div>
-					<div class="input-group mb-3">
+					<div class="input-group mb-1">
 						<input type="text" name="username" class="form-control" value="<?= empty($username) ? "" : $username; ?>" placeholder="Username">
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-user"></span>
 							</div>
 						</div>
+					</div>
+					<div class="input-group mb-3">
+					<small>*Username minimal terdiri dari 4 karakter.</small>
 					</div>
 					<div class="input-group mb-3">
 						<input type="password" name="password1" class="form-control" placeholder="Password">
@@ -380,6 +392,9 @@ if (isset($_POST['edit_password'])) {
 								<span class="fas fa-lock"></span>
 							</div>
 						</div>
+					</div>
+					<div class="input-group mb-3">
+					<small>*Password minimal terdiri dari 4 karakter.</small>
 					</div>
 					<div class="input-group mb-3">
 						<select class="form-control" name="role">

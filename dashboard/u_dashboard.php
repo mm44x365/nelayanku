@@ -1,4 +1,4 @@
 <?php
-checkUser();
+check_session('mmber');
 
 ?>
